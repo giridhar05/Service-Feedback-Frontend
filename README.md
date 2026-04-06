@@ -1,7 +1,17 @@
 # Service-Feedback-Frontend
 
-## Overview
-Service-Feedback-Frontend is the client-side application of the FeedTrack – Service Feedback Platform. It provides a responsive interface for users to submit feedback and for administrators to view and manage feedback data.
+## Architecture Overview
+
+Service-Feedback Platform follows a client-server architecture:
+
+- Frontend handles user interaction
+- Backend processes requests and business logic
+- MongoDB stores feedback data
+
+### System Flow
+
+User → Frontend UI → API Request → Backend Server → Database  
+Database → Backend → Response → Frontend → User Interface
 
 ---
 
@@ -11,6 +21,50 @@ Service-Feedback-Frontend is the client-side application of the FeedTrack – Se
 - Responsive design
 - API integration with backend
 - Scalable component structure
+
+---
+
+## Frontend Architecture & Flow
+
+### Component Flow
+
+User Interaction → Form Component → API Call → Response Handling → UI Update
+
+### Detailed Flow
+
+1. User fills the feedback form
+2. Form data is validated on the client side
+3. API request is sent to backend using fetch/axios
+4. Backend processes and stores data
+5. Response is returned to frontend
+6. UI updates with success/error message
+
+---
+
+### Data Flow Diagram (Text Representation)
+
+[User Input]
+      ↓
+[Form Component]
+      ↓
+[API Call]
+      ↓
+[Backend Server]
+      ↓
+[Database]
+      ↓
+[Response]
+      ↓
+[UI Update]
+
+---
+
+### Design Principles
+
+- Separation of concerns (UI vs API logic)
+- Reusable components
+- Environment-based configuration
+- Minimal coupling with backend
 
 ---
 
