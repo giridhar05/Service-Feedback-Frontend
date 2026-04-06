@@ -27,7 +27,7 @@ Service-Feedback-Frontend is the client-side application of the FeedTrack – Se
 
 ### 1. Clone the Repository
 git clone https://github.com/giridhar05/Service-Feedback-Frontend.git  
-cd feedtrack-frontend
+cd frontend
 
 ---
 
