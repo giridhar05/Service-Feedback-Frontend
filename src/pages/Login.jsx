@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { GoogleLogin } from '@react-oauth/google';
 import api from '../api';
 
 const Login = () => {
@@ -27,6 +28,26 @@ const Login = () => {
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid credentials.');
     } finally { setLoading(false); }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setLoading(true); setError('');
+    try {
+      const { data } = await api.post('/auth/google', { token: credentialResponse.credential });
+      login(data, data.token);
+      switch (data.role) {
+        case 'Employee':    navigate('/dashboard/employee'); break;
+        case 'Team Member': navigate('/dashboard/team');     break;
+        case 'Admin':       navigate('/dashboard/admin');    break;
+        default:            navigate('/dashboard/employee');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Google Sign-In failed.');
+    } finally { setLoading(false); }
+  };
+
+  const handleGoogleError = () => {
+    setError('Google Sign-In was unsuccessful. Try again.');
   };
 
   const css = `
@@ -278,6 +299,17 @@ const Login = () => {
     }
     .caption a { color: var(--v1); text-decoration: none; }
     .caption a:hover { text-decoration: underline; }
+
+    .divider {
+      display: flex; align-items: center; text-align: center; margin: 20px 0 16px;
+      font-size: 13px; color: var(--slate5); font-weight: 500;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; border-bottom: 1px solid var(--slate3);
+    }
+    .divider:not(:empty)::before { margin-right: 15px; }
+    .divider:not(:empty)::after { margin-left: 15px; }
+    .g-btn-wrap { display: flex; justify-content: center; min-height: 40px; }
   `;
 
   const feats = [
@@ -385,6 +417,19 @@ const Login = () => {
                 }
               </button>
             </form>
+
+            <div className="divider">or</div>
+            <div className="g-btn-wrap">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                useOneTap
+                theme="outline"
+                shape="pill"
+                text="signin_with"
+                size="large"
+              />
+            </div>
 
             <div className="foot">
               <div className="ssl"><span className="ssl-dot"/>SSL encrypted</div>
